@@ -15,6 +15,8 @@
     --arr: #0d3b66;
     --pad-x: clamp(10px, 3.5vw, 18px);
     --slide-max: 920px;
+    /* 16:9 пропорциясы: ені бойынша минималды биіктік (ұзын-жіңішке емес) */
+    --slide-min-h: max(280px, min(calc(var(--slide-max) * 9 / 16), 56.25vw));
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
@@ -37,9 +39,13 @@
     page-break-after: always;
     position: relative;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: var(--slide-min-h);
   }
   /* Тақырып: мобильде тақырып + byline тізбекті, үлкен экранда byline оң жақта */
   .slide-head {
+    flex-shrink: 0;
     background: linear-gradient(180deg, var(--head2), var(--head));
     color: #fff;
     display: flex;
@@ -74,7 +80,7 @@
       justify-content: center;
       position: relative;
       min-height: 2.85em;
-      padding: 10px clamp(5.5rem, 14vw, 7.5rem) 10px var(--pad-x);
+      padding: 10px clamp(7.5rem, 18vw, 12rem) 10px var(--pad-x);
     }
     .slide-head-title {
       flex: 1;
@@ -87,7 +93,7 @@
       top: 50%;
       transform: translateY(-50%);
       text-align: right;
-      max-width: min(7.5rem, 22vw);
+      max-width: min(11.5rem, 32vw);
       order: 0;
     }
   }
@@ -100,10 +106,19 @@
     padding-right: var(--pad-x);
   }
   .slide-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 0;
     padding: clamp(10px, 2.8vw, 14px) var(--pad-x) clamp(12px, 3vw, 16px);
     font-size: clamp(10px, 2.6vw, 12px);
-    line-height: 1.42;
+    line-height: 1.48;
     max-width: 100%;
+  }
+  /* Титул: мазмұн аз болса тігінен ортаға жақын орналасады */
+  .title-page .slide-inner {
+    justify-content: center;
   }
   .slide-inner p { margin: 0 0 0.65em; }
   .slide-inner p:last-child { margin-bottom: 0; }
@@ -193,9 +208,30 @@
     font-size: clamp(9.5px, 2.5vw, 11px);
     line-height: 1.45;
   }
+  /* Абай университеті эмблемасы (ресми логотип, Wikimedia Commons) */
+  .title-emblem-wrap {
+    text-align: center;
+    margin: 0 0 clamp(8px, 2vw, 14px);
+    padding-bottom: 2px;
+  }
+  .title-emblem-wrap img {
+    display: inline-block;
+    max-height: clamp(56px, 16vw, 110px);
+    width: auto;
+    max-width: min(96%, 400px);
+    height: auto;
+    object-fit: contain;
+    vertical-align: middle;
+  }
   @media print {
     body { background: #fff; padding: 0; }
-    .slide { box-shadow: none; max-width: none; }
+    .slide {
+      box-shadow: none;
+      max-width: none;
+      min-height: 0;
+      display: block;
+    }
+    .slide-inner { display: block; flex: none; }
     .table-scroll { overflow: visible; }
   }
 </style>
@@ -206,6 +242,9 @@
 <div class="slide title-page">
   <div class="slide-head">«Қаржылық сауаттылық негіздері» пәнінен жобалық жұмыс</div>
   <div class="slide-inner">
+    <div class="title-emblem-wrap">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c4/%D2%9A%D0%B0%D0%B7%D2%B0%D0%9F%D0%A3_.jpg" width="3054" height="1263" alt="Абай атындағы Қазақ ұлттық педагогикалық университетінің эмблемасы" loading="eager" decoding="async">
+    </div>
     <p class="meta">ҚАЗАҚСТАН РЕСПУБЛИКАСЫ ҒЫЛЫМ ЖӘНЕ ЖОҒАРЫ БІЛІМ МИНИСТРЛІГІ<br>
     АБАЙ АТЫНДАҒЫ ҚАЗАҚ ҰЛТТЫҚ ПЕДАГОГИКАЛЫҚ УНИВЕРСИТЕТІ<br>
     МАТЕМАТИКА, ФИЗИКА ЖӘНЕ ИНФОРМАТИКА ФАКУЛЬТЕТІ</p>
@@ -216,7 +255,7 @@
         <p><strong>Орындаған:</strong><br>Әбдіхадыр Зейнеп<br>Әбілмәжинова Құралай<br>Жанболатқызы Улпан</p>
       </div>
       <div>
-        <p><strong>Қабылдаған:</strong> PhD, қауым. профессор Каримова М. Д.</p>
+        <p><strong>Қабылдаған:</strong> Досаева Алия Журкабайқызы</p>
         <p><strong>Алматы, 2026</strong></p>
       </div>
     </div>
@@ -227,7 +266,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">Жоба мазмұны</span>
-  <span class="slide-byline">ФЕК-243<br>1-топ</span>
+  <span class="slide-byline">Жанболатқызы Улпан<br>Әбдіхадыр Зейнеп<br>Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <div class="cols2">
@@ -265,7 +304,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">Кіріспе: тақырыптың өзектілігі және зерттеудің мәселесі</span>
-  <span class="slide-byline">Әбдіхадыр З.<br>Құралай Ә.<br>Улпан Ж.</span>
+  <span class="slide-byline">Жанболатқызы Улпан<br>Әбдіхадыр Зейнеп<br>Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <div class="flow">
@@ -293,7 +332,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">Кіріспе: мақсат, міндеттер, нысан, пән, әдістер, жаңалық, нәтиже</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Жанболатқызы Улпан<br>Әбдіхадыр Зейнеп<br>Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <p><strong>Жобаның мақсаты:</strong> Қаржылық сауаттылықтың негізгі қағидаларын жүйелей отырып, жеке бюджетті оңтайландырудың тәжірибелік жолдарын ұсыну және қаржылық тәуелсіздікке жетудің кешенді моделін жасау.</p>
@@ -324,7 +363,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">1.1. Жеке қаржы және оның негізгі ұғымдары</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Жанболатқызы Улпан</span>
 </div>
   <div class="slide-inner">
     <div class="flow">
@@ -359,7 +398,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">1.2. Кірістер мен шығыстарды жоспарлау — негізгі идеялар</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Әбдіхадыр Зейнеп</span>
 </div>
   <div class="slide-inner">
     <div class="flow">
@@ -390,7 +429,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">1.2. Үнемдеу әдістері — салыстырмалы кесте</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Әбдіхадыр Зейнеп</span>
 </div>
   <div class="slide-inner">
     <p class="cap">Кесте. Әдіс атауы, сипаттамасы, қаржылық нәтиже (құжат мәтіні)</p>
@@ -413,7 +452,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">1.3. Бюджеттеу әдістері</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <div class="cols2">
@@ -447,7 +486,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">1.4. Қаржылық мақсаттар және жинақтау</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Жанболатқызы Улпан</span>
 </div>
   <div class="slide-inner">
     <div class="cols2">
@@ -474,7 +513,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">II. Freedom Bank — цифрлық қызметтер (2.1)</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Жанболатқызы Улпан</span>
 </div>
   <div class="slide-inner">
     <p>Жеке қаржыны басқару тек дәптермен шектелмейді. Цифрлық технологиялар шешімді жылдам қабылдауға мүмкіндік береді. <strong>Freedom Bank</strong> — мобильді қосымша, цифрлық карталар, инвестициялық өнімдер, онлайн несие арқылы жинақ, инвестиция және несие шығындарын оңтайландыруға көмектеседі.</p>
@@ -503,7 +542,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">2.2. Freedom Card: кэшбэк пен жинақ қалыптастыру</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Әбдіхадыр Зейнеп</span>
 </div>
   <div class="slide-inner">
     <div class="cols2">
@@ -533,7 +572,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">2.3. Инвест-копилка және пассивті табыс</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <div class="cols2">
@@ -565,7 +604,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">3.1. Freedom Bank құралдары және жеке бюджет (әдебиет + заң)</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Жанболатқызы Улпан</span>
 </div>
   <div class="slide-inner">
     <p>Жеке бюджет құру — табысты жоспарлау, артық шығынды азайту, жинақ. Цифрлық банктік қызметтер бұл процесті жеңілдетті; Freedom Bank қосымшасы ыңғайлы құралдар ұсынады.</p>
@@ -587,7 +626,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">3.2. Freedom Finance Global: қор нарығына алғашқы қадамдар</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Әбдіхадыр Зейнеп</span>
 </div>
   <div class="slide-inner">
     <p>Тек депозитпен шектелу өсуді баяулатады. <strong>Инвестиция</strong> — капиталды арттырудың маңызды жолы. <strong>Freedom Finance Global</strong> арқылы халықаралық қор нарығына шығу, АҚШ, Еуропа және басқа елдердің акцияларын сатып алу мүмкін.</p>
@@ -619,7 +658,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">3.3. Қаржылық еркіндік — ұзақ мерзімді болжам (әдебиеттер)</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <p><strong>Қаржылық еркіндік</strong> — қажеттілікті қамтамасыз етіп, табыс үшін міндетті жұмысқа толық тәуелді емес болу. Клейсон, Кийосаки, Шефер еңбектері осы бағытта кеңестер береді.</p>
@@ -655,7 +694,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">IV. Қорытынды (бірінші бөлігі)</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Жанболатқызы Улпан<br>Әбдіхадыр Зейнеп<br>Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <p>Қазіргі қоғамда жеке қаржыны дұрыс жоспарлау — әр адамның тұрақты өмір сүруінің және болашақтағы сенімділігінің негізгі шарты. Қаржылық жоспарлау табысты тиімді басқаруға, шығындарды бақылауға, жинақ қалыптастыруға және капиталды көбейтуге мүмкіндік береді. Дұрыс стратегия — күтпеген жағдайларға дайындық, <strong>қарыздық тәуелділіктен</strong> құтылу, <strong>қаржылық еркіндікке</strong> жол.</p>
@@ -680,7 +719,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">IV. Қорытынды (екінші бөлігі)</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Жанболатқызы Улпан<br>Әбдіхадыр Зейнеп<br>Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <div class="cols2">
@@ -703,7 +742,7 @@
 <div class="slide">
   <div class="slide-head">
   <span class="slide-head-title">V. Пайдаланылған әдебиеттер тізімі</span>
-  <span class="slide-byline">ФЕК-243</span>
+  <span class="slide-byline">Жанболатқызы Улпан<br>Әбдіхадыр Зейнеп<br>Әбілмәжинова Құралай</span>
 </div>
   <div class="slide-inner">
     <div class="cols2">
